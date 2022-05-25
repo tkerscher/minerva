@@ -56,7 +56,7 @@ Instance* createInstance(const char* name, uint32_t version) {
 	auto instanceInfo = vulkan::InstanceCreateInfo(appInfo);
 	checkResult(vkCreateInstance(&instanceInfo, nullptr, &result->instance));
 
-	volkLoadInstanceOnly(result->instance);
+	volkLoadInstance(result->instance);
 
 #ifdef MINERVA_DEBUG
 	VkDebugReportCallbackCreateInfoEXT debugReportCreateInfo = {};

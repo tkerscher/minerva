@@ -4,6 +4,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 
 #Public API
 set(PUBLIC_HEADERS
+    ${INCROOT}/Device.hpp
     ${INCROOT}/Instance.hpp
     ${INCROOT}/NonCopyable.hpp
     ${INCROOT}/config.hpp
@@ -12,6 +13,7 @@ set(PUBLIC_HEADERS
 
 #Source
 set(SRC
+    ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
