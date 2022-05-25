@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 
+include(FetchContent)
 include(GNUInstallDirs)
+
+set(FETCHCONTENT_QUIET FALSE)
 
 #read version from source
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/version.cpp" ver)
@@ -18,6 +21,21 @@ project("minerva"
     LANGUAGES CXX
 )
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
+#Fetch the vulkan headers
+FetchContent_Declare(
+    VulkanHeaders
+    GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
+    GIT_TAG v1.3.212
+)
+FetchContent_MakeAvailable(VulkanHeaders)
+#Fetch volk loader
+FetchContent_Declare(
+    volk
+    GIT_REPOSITORY https://github.com/zeux/volk.git
+    GIT_TAG 1.3.204
+)
+FetchContent_MakeAvailable(volk)
 
 #source code
 add_subdirectory(src)

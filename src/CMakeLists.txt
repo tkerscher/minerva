@@ -4,13 +4,23 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 
 #Public API
 set(PUBLIC_HEADERS
+    ${INCROOT}/Instance.hpp
+    ${INCROOT}/NonCopyable.hpp
     ${INCROOT}/config.hpp
     ${INCROOT}/version.hpp
 )
 
 #Source
 set(SRC
+    ${SRCROOT}/Instance.cpp
+    ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
+#vulkan
+    ${SRCROOT}/vk/Instance.hpp
+    ${SRCROOT}/vk/Instance.cpp
+    ${SRCROOT}/vk/Settings.hpp
+    ${SRCROOT}/vk/Structs.hpp
+    ${SRCROOT}/vk/result.hpp
 )
 
 #create library
@@ -30,6 +40,10 @@ target_compile_definitions(minerva PRIVATE MINERVA_EXPORTS)
 if (NOT BUILD_SHARED_LIBS)
     target_compile_definitions(minerva PUBLIC MINERVA_STATIC)
 endif()
+
+#link libraries
+target_link_libraries(minerva PRIVATE Vulkan::Headers)
+target_link_libraries(minerva PRIVATE volk)
 
 #Postfix for static and/or debugs
 if(BUILD_SHARED_LIBS)
