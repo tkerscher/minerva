@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.14)
+
+include(GNUInstallDirs)
+
+#read version from source
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/version.cpp" ver)
+string(REGEX MATCH "VERSION_MAJOR = ([0-9]*)" _ ${ver})
+set(VERSION_MAJOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "VERSION_MINOR = ([0-9]*)" _ ${ver})
+set(VERSION_MINOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "VERSION_PATCH = ([0-9]*)" _ ${ver})
+set(VERSION_PATCH ${CMAKE_MATCH_1})
+
+#create project
+project("minerva"
+    VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+    DESCRIPTION "Simple Framework for using the Vulkan API for computing"
+    LANGUAGES CXX
+)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
+#source code
+add_subdirectory(src)
+
+#tools
+add_subdirectory(tools)
