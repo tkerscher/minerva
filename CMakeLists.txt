@@ -36,6 +36,18 @@ FetchContent_Declare(
     GIT_TAG 1.3.204
 )
 FetchContent_MakeAvailable(volk)
+#Fetch vulkan memory allocator
+FetchContent_Declare(
+    vma
+    GIT_REPOSITORY https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+    GIT_TAG v3.0.0
+)
+FetchContent_GetProperties(vma)
+if(NOT vma_POPULATED)
+    FetchContent_Populate(vma)
+    add_library(VulkanMemoryAllocator INTERFACE)
+    target_include_directories(VulkanMemoryAllocator INTERFACE ${vma_SOURCE_DIR}/include)
+endif()
 
 #source code
 add_subdirectory(src)

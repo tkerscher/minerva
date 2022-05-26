@@ -18,11 +18,14 @@ set(SRC
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
 #vulkan
+    ${SRCROOT}/vk/Context.hpp
+    ${SRCROOT}/vk/Context.cpp
     ${SRCROOT}/vk/Instance.hpp
     ${SRCROOT}/vk/Instance.cpp
     ${SRCROOT}/vk/Settings.hpp
     ${SRCROOT}/vk/Structs.hpp
     ${SRCROOT}/vk/result.hpp
+    ${SRCROOT}/vk/vma.cpp
 )
 
 #create library
@@ -46,6 +49,7 @@ endif()
 #link libraries
 target_link_libraries(minerva PRIVATE Vulkan::Headers)
 target_link_libraries(minerva PRIVATE volk)
+target_link_libraries(minerva PRIVATE VulkanMemoryAllocator)
 
 #Postfix for static and/or debugs
 if(BUILD_SHARED_LIBS)

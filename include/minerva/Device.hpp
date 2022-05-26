@@ -15,9 +15,11 @@ struct Device {
 	uint32_t deviceID;
 
 	//Internal
-	void* PhysicalDevice;
+	void* physicalDevice;
 };
 
 [[nodiscard]] MINERVA_API std::vector<Device> enumerateDevices(const InstanceHandle& instance);
+[[nodiscard]] MINERVA_API ContextHandle createContext(const InstanceHandle& instance, const Device& device);
+[[nodiscard]] MINERVA_API Device getDevice(const ContextHandle& context);
 
 }

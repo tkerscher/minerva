@@ -7,9 +7,11 @@
 namespace minerva {
     //forward internal
     namespace vulkan {
+        struct Context;
         struct Instance;
     }
     //handle
+    using ContextHandle  = std::unique_ptr<vulkan::Context, void(*)(vulkan::Context*)>;
     using InstanceHandle = std::unique_ptr<vulkan::Instance, void(*)(vulkan::Instance*)>;
 
     struct AppVersion {
@@ -26,4 +28,12 @@ namespace minerva {
 
     [[nodiscard]] MINERVA_API InstanceHandle createInstance();
     [[nodiscard]] MINERVA_API InstanceHandle createInstance(const char* name, AppVersion version);
+
+    [[nodiscard]] MINERVA_API ContextHandle createContext(const InstanceHandle& instance);
+    [[nodiscard]] MINERVA_API ContextHandle createContext(const InstanceHandle& instance,
+        uint32_t vendorId, uint32_t deviceId);
+    [[nodiscard]] MINERVA_API ContextHandle createContext(const InstanceHandle& instance,
+        const char* name, AppVersion version);
+    [[nodiscard]] MINERVA_API ContextHandle createContext(const InstanceHandle& instance,
+        const char* name, AppVersion version, uint32_t vendorId, uint32_t deviceId);
 }

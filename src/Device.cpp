@@ -4,6 +4,7 @@
 
 #include "volk.h"
 
+#include "vk/Context.hpp"
 #include "vk/Instance.hpp"
 
 namespace minerva {
@@ -31,6 +32,25 @@ std::vector<Device> enumerateDevices(const InstanceHandle& instance) {
 	}
 
 	return devices;
+}
+
+ContextHandle createContext(const InstanceHandle& instance, const Device& device) {
+	return vulkan::createContext(
+		instance->instance,
+		static_cast<VkPhysicalDevice>(device.physicalDevice));
+}
+
+Device getDevice(const ContextHandle& context) {
+	VkPhysicalDeviceProperties props;
+	vkGetPhysicalDeviceProperties(context->physicalDevice, &props);
+
+	return {
+			props.deviceName,
+			props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU,
+			props.vendorID,
+			props.deviceID,
+			static_cast<void*>(context->physicalDevice)
+	};
 }
 
 }

@@ -26,6 +26,13 @@ namespace minerva::Settings {
     constexpr std::array<const char*, 0> InstanceExtensions{};
 #endif
 
+    //Device settings
+    constexpr std::array<const char*, 0> DeviceExtensions{};
+    constexpr VkPhysicalDeviceFeatures DeviceFeatures{};
+
+    //Queue priority
+    constexpr float QueuePriority = 1.0f;
+
     //Debug
     constexpr VkDebugReportFlagsEXT DebugFlags =
 #if defined(MINERVA_VERBOSE_VULKAN)

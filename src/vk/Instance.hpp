@@ -6,6 +6,7 @@
 #include <vulkan/vulkan.h>
 
 #include "minerva/config.hpp"
+#include "minerva/Handles.hpp"
 
 namespace minerva::vulkan {
     struct Instance {
@@ -16,6 +17,6 @@ namespace minerva::vulkan {
     };
 
     [[nodiscard]]
-    Instance* createInstance(const char* name, uint32_t version);
+    InstanceHandle createInstance(const char* name, uint32_t version);
     void destroyInstance(Instance* instance);
 }

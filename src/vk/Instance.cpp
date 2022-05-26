@@ -46,17 +46,17 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 
 namespace minerva::vulkan {
 
-Instance* createInstance(const char* name, uint32_t version) {
+InstanceHandle createInstance(const char* name, uint32_t version) {
 	if (volkInitialize() != VK_SUCCESS)
-		return nullptr;
+		return { nullptr, destroyInstance };
 
-	auto result = new Instance;
+	auto result = InstanceHandle(new Instance(), destroyInstance);
 
 	auto appInfo = vulkan::ApplicationInfo(name, version);
 	auto instanceInfo = vulkan::InstanceCreateInfo(appInfo);
 	checkResult(vkCreateInstance(&instanceInfo, nullptr, &result->instance));
 
-	volkLoadInstance(result->instance);
+	volkLoadInstanceOnly(result->instance);
 
 #ifdef MINERVA_DEBUG
 	VkDebugReportCallbackCreateInfoEXT debugReportCreateInfo = {};
@@ -71,8 +71,15 @@ Instance* createInstance(const char* name, uint32_t version) {
 }
 
 void destroyInstance(Instance* instance) {
+	if (!instance)
+		return;
+
+	//instance might be incomplete
+	//in most cases we're save to call destroy with nullptr
 #ifdef MINERVA_DEBUG
-	vkDestroyDebugReportCallbackEXT(instance->instance, instance->debugReport, nullptr);
+	if (instance->instance) {
+		vkDestroyDebugReportCallbackEXT(instance->instance, instance->debugReport, nullptr);
+	}
 #endif
 
 	vkDestroyInstance(instance->instance, nullptr);
