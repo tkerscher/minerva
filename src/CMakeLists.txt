@@ -4,6 +4,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 
 #Public API
 set(PUBLIC_HEADERS
+    ${INCROOT}/Buffer.hpp
     ${INCROOT}/Device.hpp
     ${INCROOT}/Instance.hpp
     ${INCROOT}/NonCopyable.hpp
@@ -13,11 +14,14 @@ set(PUBLIC_HEADERS
 
 #Source
 set(SRC
+    ${SRCROOT}/Buffer.cpp
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
 #vulkan
+    ${SRCROOT}/vk/Buffer.hpp
+    ${SRCROOT}/vk/Buffer.cpp
     ${SRCROOT}/vk/Context.hpp
     ${SRCROOT}/vk/Context.cpp
     ${SRCROOT}/vk/Instance.hpp

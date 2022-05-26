@@ -25,6 +25,21 @@ constexpr VkApplicationInfo ApplicationInfo(
 }
 
 [[nodiscard]]
+constexpr VkBufferCreateInfo BufferCreateInfo(
+	uint64_t size,
+	VkBufferUsageFlags usage)
+{
+	VkBufferCreateInfo info{};
+
+	info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	info.size = size;
+	info.usage = usage;
+
+	return info;
+}
+
+
+[[nodiscard]]
 constexpr VkDeviceCreateInfo DeviceCreateInfo(
 	const VkDeviceQueueCreateInfo& queue)
 {
