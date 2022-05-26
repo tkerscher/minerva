@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "vk/Settings.hpp"
 #include "vk/Structs.hpp"
 #include "vk/result.hpp"
 
@@ -19,7 +20,7 @@ ContextHandle createContext(VkInstance instance, VkPhysicalDevice device) {
 	//Since it won't matter that much, just take the first suitable one
 	uint32_t family = 0;
 	for (; family < count; ++family) {
-		if (props[family].queueFlags & (VK_QUEUE_COMPUTE_BIT | VK_QUEUE_TRANSFER_BIT))
+		if (props[family].queueFlags & (Settings::QueueFlags))
 			break;
 	}
 
@@ -29,6 +30,7 @@ ContextHandle createContext(VkInstance instance, VkPhysicalDevice device) {
 	//create logical device
 	auto queueInfo = vulkan::DeviceQueueCreateInfo(family);
 	auto deviceInfo = vulkan::DeviceCreateInfo(queueInfo);
+	deviceInfo.pNext = &Settings::DeviceVulkan12Features;//Enable features
 	checkResult(vkCreateDevice(device, &deviceInfo, nullptr, &context->device));
 
 	//load functions
@@ -66,7 +68,7 @@ ContextHandle createContext(VkInstance instance, VkPhysicalDevice device) {
 	//functions.vkGetDeviceImageMemoryRequirements
 
 	VmaAllocatorCreateInfo info{};
-	info.vulkanApiVersion = VK_API_VERSION_1_1;
+	info.vulkanApiVersion = Settings::ApiVersion;
 	info.physicalDevice = device;
 	info.device = context->device;
 	info.instance = instance;

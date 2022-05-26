@@ -9,6 +9,7 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Instance.hpp
     ${INCROOT}/NonCopyable.hpp
     ${INCROOT}/Tensor.hpp
+    ${INCROOT}/Timeline.hpp
     ${INCROOT}/config.hpp
     ${INCROOT}/version.hpp
 )
@@ -19,6 +20,7 @@ set(SRC
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
     ${SRCROOT}/Tensor.cpp
+    ${SRCROOT}/Timeline.cpp
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
 #vulkan
@@ -30,6 +32,8 @@ set(SRC
     ${SRCROOT}/vk/Instance.cpp
     ${SRCROOT}/vk/Settings.hpp
     ${SRCROOT}/vk/Structs.hpp
+    ${SRCROOT}/vk/Timeline.hpp
+    ${SRCROOT}/vk/Timeline.cpp
     ${SRCROOT}/vk/result.hpp
     ${SRCROOT}/vk/vma.cpp
 )

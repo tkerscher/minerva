@@ -11,7 +11,7 @@ namespace minerva::Settings {
     //Engine Info
     constexpr auto EngineName = "Minerva";
     constexpr uint32_t EngineVersion = VK_MAKE_VERSION(0, 1, 0);
-    constexpr uint32_t ApiVersion = VK_API_VERSION_1_1;
+    constexpr uint32_t ApiVersion = VK_API_VERSION_1_2;
 
     //Instance settings
 #ifdef MINERVA_DEBUG
@@ -29,8 +29,17 @@ namespace minerva::Settings {
     //Device settings
     constexpr std::array<const char*, 0> DeviceExtensions{};
     constexpr VkPhysicalDeviceFeatures DeviceFeatures{};
+    //C++20 introduced aggregated initializer, but we're at C++17 -> use this ugly thing
+    constexpr VkPhysicalDeviceVulkan12Features _12features() {
+        VkPhysicalDeviceVulkan12Features features{};
+        features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
+        features.timelineSemaphore = VK_TRUE;
+        return features;
+    }
+    constexpr VkPhysicalDeviceVulkan12Features DeviceVulkan12Features = _12features();
 
-    //Queue priority
+    //Queue settings
+    constexpr VkQueueFlags QueueFlags = VK_QUEUE_COMPUTE_BIT | VK_QUEUE_TRANSFER_BIT;
     constexpr float QueuePriority = 1.0f;
 
     //Debug

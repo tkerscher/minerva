@@ -87,4 +87,58 @@ constexpr VkInstanceCreateInfo InstanceCreateInfo(
 	return info;
 }
 
+[[nodiscard]]
+constexpr VkSemaphoreCreateInfo SemaphoreCreateInfo(
+	const VkSemaphoreTypeCreateInfo& typeInfo)
+{
+	VkSemaphoreCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	info.pNext = &typeInfo;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkSemaphoreSignalInfo SemaphoreSignalInfo(
+	VkSemaphore semaphore,
+	uint64_t value)
+{
+	VkSemaphoreSignalInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SIGNAL_INFO;
+	info.semaphore = semaphore;
+	info.value = value;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkSemaphoreTypeCreateInfo SemaphoreTypeCreateInfo(
+	uint64_t initialValue)
+{
+	VkSemaphoreTypeCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO;
+	info.semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE;
+	info.initialValue = initialValue;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkSemaphoreWaitInfo SemaphoreWaitInfo(
+	const VkSemaphore& semaphore,
+	const uint64_t& value)
+{
+	VkSemaphoreWaitInfo info = {};
+	
+	info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
+	info.semaphoreCount = 1;
+	info.pSemaphores = &semaphore;
+	info.pValues = &value;
+
+	return info;
+}
+
 }
