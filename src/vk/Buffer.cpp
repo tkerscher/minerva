@@ -26,7 +26,7 @@ BufferHandle createBuffer(
 		&allocInfo,
 		&result->buffer,
 		&result->allocation,
-		nullptr));
+		&result->allocInfo));
 
 	return result;
 }
@@ -35,7 +35,6 @@ void destroyBuffer(Buffer* buffer) {
 	if (!buffer)
 		return;
 
-	vmaUnmapMemory(buffer->allocator, buffer->allocation);
 	vmaDestroyBuffer(buffer->allocator, buffer->buffer, buffer->allocation);
 }
 

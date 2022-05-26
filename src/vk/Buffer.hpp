@@ -11,6 +11,7 @@ namespace minerva::vulkan {
 	struct Buffer {
 		VkBuffer buffer;
 		VmaAllocation allocation;
+		VmaAllocationInfo allocInfo;
 
 		//for destroying
 		VmaAllocator allocator;

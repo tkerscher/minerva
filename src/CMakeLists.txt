@@ -8,6 +8,7 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Device.hpp
     ${INCROOT}/Instance.hpp
     ${INCROOT}/NonCopyable.hpp
+    ${INCROOT}/Tensor.hpp
     ${INCROOT}/config.hpp
     ${INCROOT}/version.hpp
 )
@@ -17,6 +18,7 @@ set(SRC
     ${SRCROOT}/Buffer.cpp
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
+    ${SRCROOT}/Tensor.cpp
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
 #vulkan

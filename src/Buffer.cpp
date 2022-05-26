@@ -19,10 +19,7 @@ BufferImp::BufferImp(const ContextHandle& context, uint64_t size)
 		VMA_ALLOCATION_CREATE_MAPPED_BIT
 	))
 {
-	void* pData;
-	vmaMapMemory(context->allocator, buffer->allocation, &pData);
-
-	memory = span<std::byte>(static_cast<std::byte*>(pData), size);
+	memory = span<std::byte>(static_cast<std::byte*>(buffer->allocInfo.pMappedData), size);
 }
 
 }
