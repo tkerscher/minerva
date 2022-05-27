@@ -5,20 +5,24 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 #Public API
 set(PUBLIC_HEADERS
     ${INCROOT}/Buffer.hpp
+    ${INCROOT}/Copy.hpp
     ${INCROOT}/Device.hpp
     ${INCROOT}/Instance.hpp
-    ${INCROOT}/NonCopyable.hpp
+    ${INCROOT}/Sequence.hpp
     ${INCROOT}/Tensor.hpp
     ${INCROOT}/Timeline.hpp
     ${INCROOT}/config.hpp
+    ${INCROOT}/minerva.hpp
     ${INCROOT}/version.hpp
 )
 
 #Source
 set(SRC
     ${SRCROOT}/Buffer.cpp
+    ${SRCROOT}/Copy.cpp
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
+    ${SRCROOT}/Sequence.cpp
     ${SRCROOT}/Tensor.cpp
     ${SRCROOT}/Timeline.cpp
     ${SRCROOT}/array.hpp
@@ -28,6 +32,8 @@ set(SRC
     ${SRCROOT}/vk/Buffer.cpp
     ${SRCROOT}/vk/Context.hpp
     ${SRCROOT}/vk/Context.cpp
+    ${SRCROOT}/vk/Command.hpp
+    ${SRCROOT}/vk/Command.cpp
     ${SRCROOT}/vk/Instance.hpp
     ${SRCROOT}/vk/Instance.cpp
     ${SRCROOT}/vk/Settings.hpp

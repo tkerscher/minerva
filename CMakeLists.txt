@@ -54,3 +54,9 @@ add_subdirectory(src)
 
 #tools
 add_subdirectory(tools)
+
+#examples
+option(BUILD_EXAMPLES "Build examples" ON)
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()

@@ -38,6 +38,10 @@ ContextHandle createContext(VkInstance instance, VkPhysicalDevice device) {
 
 	//get queue
 	context->table.vkGetDeviceQueue(context->device, family, 0, &context->queue);
+	//create command pool
+	auto cmdPoolInfo = CommandPoolCreateInfo(family);
+	checkResult(context->table.vkCreateCommandPool(
+		context->device, &cmdPoolInfo, nullptr, &context->cmdPool));
 
 	//create allocator
 	VmaVulkanFunctions functions{};
@@ -84,6 +88,7 @@ void destroyContext(Context* context) {
 		return;
 
 	vmaDestroyAllocator(context->allocator);
+	context->table.vkDestroyCommandPool(context->device, context->cmdPool, nullptr);
 	context->table.vkDestroyDevice(context->device, nullptr);
 }
 

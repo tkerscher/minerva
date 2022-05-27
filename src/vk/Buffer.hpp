@@ -13,8 +13,7 @@ namespace minerva::vulkan {
 		VmaAllocation allocation;
 		VmaAllocationInfo allocInfo;
 
-		//for destroying
-		VmaAllocator allocator;
+		const Context& context;
 	};
 
 	[[nodiscard]]

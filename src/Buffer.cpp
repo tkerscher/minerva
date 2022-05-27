@@ -9,6 +9,10 @@ span<std::byte> BufferImp::getMemory() const {
 	return memory;
 }
 
+uint64_t BufferImp::size_bytes() const {
+	return memory.size_bytes();
+}
+
 BufferImp::BufferImp(const ContextHandle& context, uint64_t size)
 	: buffer(createBuffer(
 		context,
@@ -21,5 +25,6 @@ BufferImp::BufferImp(const ContextHandle& context, uint64_t size)
 {
 	memory = span<std::byte>(static_cast<std::byte*>(buffer->allocInfo.pMappedData), size);
 }
+BufferImp::~BufferImp() = default;
 
 }

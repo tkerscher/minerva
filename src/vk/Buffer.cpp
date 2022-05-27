@@ -12,8 +12,7 @@ BufferHandle createBuffer(
 	VkBufferUsageFlags usage,
 	VmaAllocationCreateFlags flags)
 {
-	BufferHandle result{ new Buffer(), destroyBuffer };
-	result->allocator = context->allocator;
+	BufferHandle result{new Buffer({0,0,{},*context}), destroyBuffer };
 
 	auto bufferInfo = BufferCreateInfo(size, usage);
 	VmaAllocationCreateInfo allocInfo{};
@@ -35,7 +34,7 @@ void destroyBuffer(Buffer* buffer) {
 	if (!buffer)
 		return;
 
-	vmaDestroyBuffer(buffer->allocator, buffer->buffer, buffer->allocation);
+	vmaDestroyBuffer(buffer->context.allocator, buffer->buffer, buffer->allocation);
 }
 
 }

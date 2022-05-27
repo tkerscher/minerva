@@ -3,6 +3,7 @@
 #define VK_NO_PROTOTYPES
 #include <vulkan/vulkan.h>
 
+#include "minerva/span.hpp"
 #include "vk/Settings.hpp"
 
 namespace minerva::vulkan {
@@ -37,6 +38,62 @@ constexpr VkBufferCreateInfo BufferCreateInfo(
 
 	return info;
 }
+
+[[nodiscard]]
+constexpr VkBufferMemoryBarrier BufferMemoryBarrier(
+	VkBuffer buffer,
+	VkAccessFlagBits src,
+	VkAccessFlagBits dst)
+{
+	VkBufferMemoryBarrier barrier = {};
+
+	barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	barrier.buffer = buffer;
+	barrier.srcAccessMask = src;
+	barrier.dstAccessMask = dst;
+	barrier.size = VK_WHOLE_SIZE;
+
+	return barrier;
+}
+
+[[nodiscard]]
+constexpr VkCommandBufferAllocateInfo CommandBufferAllocateInfo(
+	VkCommandPool pool)
+{
+	VkCommandBufferAllocateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	info.commandPool = pool;
+	info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	info.commandBufferCount = 1;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkCommandBufferBeginInfo CommandBufferBeginInfo()
+{
+	VkCommandBufferBeginInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkCommandPoolCreateInfo CommandPoolCreateInfo(
+	uint32_t family)
+{
+	VkCommandPoolCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	info.flags = Settings::CommandPoolFlags;
+	info.queueFamilyIndex = family;
+
+	return info;
+}
+
 
 
 [[nodiscard]]
@@ -137,6 +194,44 @@ constexpr VkSemaphoreWaitInfo SemaphoreWaitInfo(
 	info.semaphoreCount = 1;
 	info.pSemaphores = &semaphore;
 	info.pValues = &value;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkSubmitInfo SubmitInfo(
+	const VkSemaphore& semaphore,
+	const VkPipelineStageFlags* waitDstStageMask,
+	const VkTimelineSemaphoreSubmitInfo* timeline,
+	span<const VkCommandBuffer> cmdBuffers)
+{
+	VkSubmitInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	info.pNext = timeline;
+	info.waitSemaphoreCount = 1;
+	info.pWaitSemaphores = &semaphore;
+	info.pWaitDstStageMask = waitDstStageMask;
+	info.signalSemaphoreCount = 1;
+	info.pSignalSemaphores = &semaphore;
+	info.commandBufferCount = cmdBuffers.size();
+	info.pCommandBuffers = cmdBuffers.data();
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkTimelineSemaphoreSubmitInfo TimelineSemaphoreSubmitInfo(
+	uint64_t* waitValue,
+	uint64_t* signalValue)
+{
+	VkTimelineSemaphoreSubmitInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+	info.waitSemaphoreValueCount = 1;
+	info.pWaitSemaphoreValues = waitValue;
+	info.signalSemaphoreValueCount = 1;
+	info.pSignalSemaphoreValues = signalValue;
 
 	return info;
 }

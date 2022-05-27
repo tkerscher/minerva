@@ -16,6 +16,8 @@ struct Context {
 	VkDevice device;
 	VkQueue queue;
 
+	VkCommandPool cmdPool;
+
 	VolkDeviceTable table;
 
 	VmaAllocator allocator;

@@ -4,8 +4,13 @@
 
 namespace minerva {
 
+uint64_t TensorImp::size_bytes() const {
+	return _size;
+}
+
 TensorImp::TensorImp(const ContextHandle& context, uint64_t size)
-	: buffer(createBuffer(
+	: _size(size)
+	, buffer(createBuffer(
 		context,
 		size,
 		VK_BUFFER_USAGE_TRANSFER_SRC_BIT |
@@ -14,5 +19,6 @@ TensorImp::TensorImp(const ContextHandle& context, uint64_t size)
 		0
 	))
 {}
+TensorImp::~TensorImp() = default;
 
 }

@@ -41,6 +41,7 @@ namespace minerva::Settings {
     //Queue settings
     constexpr VkQueueFlags QueueFlags = VK_QUEUE_COMPUTE_BIT | VK_QUEUE_TRANSFER_BIT;
     constexpr float QueuePriority = 1.0f;
+    constexpr VkCommandPoolCreateFlagBits CommandPoolFlags = {};
 
     //Debug
     constexpr VkDebugReportFlagsEXT DebugFlags =
