@@ -18,7 +18,7 @@ set(VERSION_PATCH ${CMAKE_MATCH_1})
 project("minerva"
     VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
     DESCRIPTION "Simple Framework for using the Vulkan API for computing"
-    LANGUAGES CXX
+    LANGUAGES C CXX
 )
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
@@ -47,6 +47,23 @@ if(NOT vma_POPULATED)
     FetchContent_Populate(vma)
     add_library(VulkanMemoryAllocator INTERFACE)
     target_include_directories(VulkanMemoryAllocator INTERFACE ${vma_SOURCE_DIR}/include)
+endif()
+#fetch spirv-reflect
+#Let's create the target ourselves to skip some things
+FetchContent_Declare(
+    reflect
+    GIT_REPOSITORY https://github.com/KhronosGroup/SPIRV-Reflect.git
+    GIT_TAG 41ea032be77bd7f1a82f3de0fe3e18778c74e689
+)
+FetchContent_GetProperties(reflect)
+if(NOT reflect_POPULATED)
+    FetchContent_Populate(reflect)
+    #for whatever reason google decided to put the important files at the root
+    #with all the other files...
+    add_library(spirv-reflect STATIC
+        ${reflect_SOURCE_DIR}/spirv_reflect.cpp
+        ${reflect_SOURCE_DIR}/spirv_reflect.c)
+    target_include_directories(spirv-reflect PUBLIC ${reflect_SOURCE_DIR})
 endif()
 
 #source code

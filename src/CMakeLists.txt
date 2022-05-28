@@ -8,6 +8,7 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Copy.hpp
     ${INCROOT}/Device.hpp
     ${INCROOT}/Instance.hpp
+    ${INCROOT}/Program.hpp
     ${INCROOT}/Sequence.hpp
     ${INCROOT}/Tensor.hpp
     ${INCROOT}/Timeline.hpp
@@ -22,6 +23,7 @@ set(SRC
     ${SRCROOT}/Copy.cpp
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Instance.cpp
+    ${SRCROOT}/Program.cpp
     ${SRCROOT}/Sequence.cpp
     ${SRCROOT}/Tensor.cpp
     ${SRCROOT}/Timeline.cpp
@@ -66,6 +68,7 @@ endif()
 target_link_libraries(minerva PRIVATE Vulkan::Headers)
 target_link_libraries(minerva PRIVATE volk)
 target_link_libraries(minerva PRIVATE VulkanMemoryAllocator)
+target_link_libraries(minerva PRIVATE spirv-reflect)
 
 #Postfix for static and/or debugs
 if(BUILD_SHARED_LIBS)

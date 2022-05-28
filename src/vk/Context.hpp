@@ -17,6 +17,9 @@ struct Context {
 	VkQueue queue;
 
 	VkCommandPool cmdPool;
+	VkDescriptorPool dscPool;
+
+	VkPipelineCache pipeCache;
 
 	VolkDeviceTable table;
 

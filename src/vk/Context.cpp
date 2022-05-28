@@ -43,6 +43,18 @@ ContextHandle createContext(VkInstance instance, VkPhysicalDevice device) {
 	checkResult(context->table.vkCreateCommandPool(
 		context->device, &cmdPoolInfo, nullptr, &context->cmdPool));
 
+	//Create descriptor set pool
+	//Normaly you would want to make this a bit more finegrained,
+	//but this is also fine. Although the hardcap is a bit ugly
+	auto descInfo = vulkan::DescriptorPoolInfo();
+	checkResult(context->table.vkCreateDescriptorPool(
+		context->device, &descInfo, nullptr, &context->dscPool));
+
+	//Create pipeline cache
+	auto cacheInfo = vulkan::PipelineCacheCreateInfo();
+	checkResult(context->table.vkCreatePipelineCache(
+		context->device, &cacheInfo, nullptr, &context->pipeCache));
+
 	//create allocator
 	VmaVulkanFunctions functions{};
 	functions.vkAllocateMemory                        = context->table.vkAllocateMemory;
@@ -88,6 +100,8 @@ void destroyContext(Context* context) {
 		return;
 
 	vmaDestroyAllocator(context->allocator);
+	context->table.vkDestroyPipelineCache(context->device, context->pipeCache, nullptr);
+	context->table.vkDestroyDescriptorPool(context->device, context->dscPool, nullptr);
 	context->table.vkDestroyCommandPool(context->device, context->cmdPool, nullptr);
 	context->table.vkDestroyDevice(context->device, nullptr);
 }

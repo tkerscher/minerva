@@ -43,6 +43,19 @@ namespace minerva::Settings {
     constexpr float QueuePriority = 1.0f;
     constexpr VkCommandPoolCreateFlagBits CommandPoolFlags = {};
 
+    //Descriptor Pool
+    constexpr VkDescriptorSetLayoutCreateFlags DescriptorSetLayoutCreateFlags =
+        VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT;
+    constexpr VkDescriptorPoolCreateFlags DescriptorPoolCreateFlags =
+        VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT |
+        VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT;
+    constexpr uint32_t MaxDescriptorPoolSets = 1000;
+    constexpr auto DescriptorPoolSizes = to_array<VkDescriptorPoolSize>({
+        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000},
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 }
+    });
+
     //Debug
     constexpr VkDebugReportFlagsEXT DebugFlags =
 #if defined(MINERVA_VERBOSE_VULKAN)

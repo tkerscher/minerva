@@ -94,7 +94,69 @@ constexpr VkCommandPoolCreateInfo CommandPoolCreateInfo(
 	return info;
 }
 
+[[nodiscard]]
+constexpr VkComputePipelineCreateInfo ComputePipelineCreateInfo(
+	VkPipelineLayout layout,
+	const char* entryPoint,
+	VkShaderModule shaderModule)
+{
+	VkComputePipelineCreateInfo info = {};
 
+	info.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
+	info.layout = layout;
+
+	//special: stage is not a pointer, but nested
+	info.stage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	info.stage.module = shaderModule;
+	info.stage.pName = entryPoint;
+	info.stage.stage = VK_SHADER_STAGE_COMPUTE_BIT;
+	info.stage.pSpecializationInfo = nullptr; //not yet supported
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkDescriptorPoolCreateInfo DescriptorPoolInfo()
+{
+	VkDescriptorPoolCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	info.flags = Settings::DescriptorPoolCreateFlags;
+	info.maxSets = Settings::MaxDescriptorPoolSets;
+	info.poolSizeCount = Settings::DescriptorPoolSizes.size();
+	info.pPoolSizes = Settings::DescriptorPoolSizes.data();
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkDescriptorSetAllocateInfo DescriptorSetAllocateInfo(
+	VkDescriptorPool pool,
+	const VkDescriptorSetLayout& layout)
+{
+	VkDescriptorSetAllocateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	info.descriptorPool = pool;
+	info.descriptorSetCount = 1;
+	info.pSetLayouts = &layout;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkDescriptorSetLayoutCreateInfo DescriptorSetLayoutCreateInfo(
+	span<VkDescriptorSetLayoutBinding> bindings)
+{
+	VkDescriptorSetLayoutCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	info.flags = Settings::DescriptorSetLayoutCreateFlags;
+	info.bindingCount = bindings.size();
+	info.pBindings = bindings.data();
+
+	return info;
+}
 
 [[nodiscard]]
 constexpr VkDeviceCreateInfo DeviceCreateInfo(
@@ -141,6 +203,29 @@ constexpr VkInstanceCreateInfo InstanceCreateInfo(
 	info.enabledLayerCount = Settings::Layers.size();
 	info.pApplicationInfo = &appInfo;
 
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkPipelineCacheCreateInfo PipelineCacheCreateInfo()
+{
+	VkPipelineCacheCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
+	
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkPipelineLayoutCreateInfo PipelineLayoutCreateInfo(
+	span<VkDescriptorSetLayout> sets)
+{
+	VkPipelineLayoutCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	info.setLayoutCount = sets.size();
+	info.pSetLayouts = sets.data();
+	
 	return info;
 }
 
@@ -199,6 +284,19 @@ constexpr VkSemaphoreWaitInfo SemaphoreWaitInfo(
 }
 
 [[nodiscard]]
+constexpr VkShaderModuleCreateInfo ShaderModuleCreateInfo(
+	span<uint32_t> code)
+{
+	VkShaderModuleCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	info.codeSize = code.size_bytes();
+	info.pCode = code.data();
+
+	return info;
+}
+
+[[nodiscard]]
 constexpr VkSubmitInfo SubmitInfo(
 	const VkSemaphore& semaphore,
 	const VkPipelineStageFlags* waitDstStageMask,
@@ -232,6 +330,25 @@ constexpr VkTimelineSemaphoreSubmitInfo TimelineSemaphoreSubmitInfo(
 	info.pWaitSemaphoreValues = waitValue;
 	info.signalSemaphoreValueCount = 1;
 	info.pSignalSemaphoreValues = signalValue;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkWriteDescriptorSet WriteDescriptorSet(
+	VkDescriptorSet set,
+	uint32_t dstBinding,
+	VkDescriptorType type,
+	const VkDescriptorBufferInfo& bufferInfo)
+{
+	VkWriteDescriptorSet info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	info.dstSet = set;
+	info.dstBinding = dstBinding;
+	info.descriptorType = type;
+	info.descriptorCount = 1;
+	info.pBufferInfo = &bufferInfo;
 
 	return info;
 }
