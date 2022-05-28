@@ -8,8 +8,8 @@ using namespace minerva;
 
 int main() {
 	//load shader
-	auto shader = loadShader("add.spv");
-	if (shader.empty()) {
+	auto code = loadShader("add.spv");
+	if (code.empty()) {
 		std::cerr << "Could not load shader code!";
 		return -1;
 	}
@@ -32,10 +32,6 @@ int main() {
 	Tensor<uint32_t> tensor3(context, 10);
 
 	//create program
-	span<uint32_t> code = {
-		reinterpret_cast<uint32_t*>(&shader.front()),
-		reinterpret_cast<uint32_t*>(&shader.back()+1)
-	};
 	Program program(context, code);
 
 	//create params
