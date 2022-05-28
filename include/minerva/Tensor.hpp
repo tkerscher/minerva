@@ -6,15 +6,18 @@
 namespace minerva {
 	class MINERVA_API TensorImp {
 	public:
+
 		[[nodiscard]] uint64_t size_bytes() const;
 
 		TensorImp(const ContextHandle& context, uint64_t size);
 		virtual ~TensorImp();
 
+	public: //internal
+		[[nodiscard]] const vulkan::Buffer& getBuffer() const;
+
 	private:
 		BufferHandle buffer;
 		uint64_t _size;
-		friend class CopyCommandFactory;
 	};
 
 	template<class T>

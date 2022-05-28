@@ -8,6 +8,10 @@ uint64_t TensorImp::size_bytes() const {
 	return _size;
 }
 
+const vulkan::Buffer& TensorImp::getBuffer() const {
+	return *buffer;
+}
+
 TensorImp::TensorImp(const ContextHandle& context, uint64_t size)
 	: _size(size)
 	, buffer(createBuffer(

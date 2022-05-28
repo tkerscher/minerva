@@ -11,11 +11,15 @@ namespace minerva {
 		[[nodiscard]] uint64_t size_bytes() const;
 
 		BufferImp(const ContextHandle& context, uint64_t size);
+		BufferImp(const ContextHandle& context, span<const std::byte> data);
 		virtual ~BufferImp();
+		
+	public:
+		[[nodiscard]] const vulkan::Buffer& getBuffer() const;
+
 	private:
 		BufferHandle buffer;
 		span<std::byte> memory;
-		friend class CopyCommandFactory;
 	};
 
 	template<class T>
@@ -38,5 +42,13 @@ namespace minerva {
 		Buffer(const ContextHandle& context, size_t count)
 			: BufferImp(context, sizeof(T) * count)
 		{}
+		Buffer(const ContextHandle& context, span<const T> data)
+			: BufferImp(context, as_bytes(data))
+		{}
+		Buffer(const ContextHandle& context, std::initializer_list<T> init)
+			: Buffer(context, span<const T>{init})
+		{}
 	};
+
+	template<class Container> Buffer(const ContextHandle&, const Container&)->Buffer<typename Container::value_type>;
 }

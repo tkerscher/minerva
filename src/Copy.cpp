@@ -19,9 +19,9 @@ namespace minerva {
 
 CommandHandle CopyCommandFactory::retrieveTensor(const TensorImp& src, const BufferImp& dst) {
 	//check for src and dst to be from the same context
-	if (&src.buffer->context != &dst.buffer->context)
+	if (&src.getBuffer().context != &dst.getBuffer().context)
 		throw std::logic_error(DIFFERENT_CONTEXT_ERROR_STR);
-	auto& context = src.buffer->context;
+	auto& context = src.getBuffer().context;
 	//check both have the same size
 	if (src.size_bytes() != dst.size_bytes())
 		throw std::logic_error(SIZE_MISMATCH_ERROR_STR);
@@ -34,7 +34,8 @@ CommandHandle CopyCommandFactory::retrieveTensor(const TensorImp& src, const Buf
 	vulkan::checkResult(context.table.vkBeginCommandBuffer(command->buffer, &beginInfo));
 
 	//ensure writing to tensor finished
-	auto barrier = vulkan::BufferMemoryBarrier(src.buffer->buffer,
+	auto barrier = vulkan::BufferMemoryBarrier(
+		src.getBuffer().buffer,
 		VK_ACCESS_SHADER_WRITE_BIT,
 		VK_ACCESS_TRANSFER_READ_BIT);
 	context.table.vkCmdPipelineBarrier(command->buffer,
@@ -48,10 +49,14 @@ CommandHandle CopyCommandFactory::retrieveTensor(const TensorImp& src, const Buf
 	//actually copy the buffer
 	VkBufferCopy copyRegion{};
 	copyRegion.size = size;
-	context.table.vkCmdCopyBuffer(command->buffer, src.buffer->buffer, dst.buffer->buffer, 1, &copyRegion);
+	context.table.vkCmdCopyBuffer(command->buffer,
+		src.getBuffer().buffer,
+		dst.getBuffer().buffer,
+		1, &copyRegion);
 
 	//barrier to ensure transfer finished
-	barrier = vulkan::BufferMemoryBarrier(src.buffer->buffer,
+	barrier = vulkan::BufferMemoryBarrier(
+		src.getBuffer().buffer,
 		VK_ACCESS_TRANSFER_READ_BIT,
 		VK_ACCESS_SHADER_WRITE_BIT);
 	context.table.vkCmdPipelineBarrier(command->buffer,
@@ -71,9 +76,9 @@ CommandHandle CopyCommandFactory::retrieveTensor(const TensorImp& src, const Buf
 
 CommandHandle CopyCommandFactory::updateTensor(const BufferImp& src, const TensorImp& dst) {
 	//check for src and dst to be from the same context
-	if (&src.buffer->context != &dst.buffer->context)
+	if (&src.getBuffer().context != &dst.getBuffer().context)
 		throw std::logic_error(DIFFERENT_CONTEXT_ERROR_STR);
-	auto& context = src.buffer->context;
+	auto& context = src.getBuffer().context;
 	//check both have the same size
 	if (src.size_bytes() != dst.size_bytes())
 		throw std::logic_error(SIZE_MISMATCH_ERROR_STR);
@@ -86,7 +91,8 @@ CommandHandle CopyCommandFactory::updateTensor(const BufferImp& src, const Tenso
 	vulkan::checkResult(context.table.vkBeginCommandBuffer(command->buffer, &beginInfo));
 
 	//ensure tensor is safe to update
-	auto barrier = vulkan::BufferMemoryBarrier(dst.buffer->buffer,
+	auto barrier = vulkan::BufferMemoryBarrier(
+		dst.getBuffer().buffer,
 		VK_ACCESS_SHADER_READ_BIT,
 		VK_ACCESS_TRANSFER_WRITE_BIT);
 	context.table.vkCmdPipelineBarrier(command->buffer,
@@ -101,12 +107,13 @@ CommandHandle CopyCommandFactory::updateTensor(const BufferImp& src, const Tenso
 	VkBufferCopy copy{};
 	copy.size = size;
 	context.table.vkCmdCopyBuffer(command->buffer,
-		src.buffer->buffer,
-		dst.buffer->buffer,
+		src.getBuffer().buffer,
+		dst.getBuffer().buffer,
 		1, &copy);
 
 	//ensure transfer completed
-	barrier = vulkan::BufferMemoryBarrier(dst.buffer->buffer,
+	barrier = vulkan::BufferMemoryBarrier(
+		dst.getBuffer().buffer,
 		VK_ACCESS_TRANSFER_WRITE_BIT,
 		VK_ACCESS_SHADER_READ_BIT);
 	context.table.vkCmdPipelineBarrier(command->buffer,

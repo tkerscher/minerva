@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 
 #include "minerva/minerva.hpp"
 
@@ -14,15 +15,9 @@ int main() {
 	std::cout << "Selected Device: " << device.name << "\n\n";
 
 	//create memory
-	Buffer<uint32_t> buffer1(context, 10), buffer2(context, 10);
+	Buffer buffer1(context, { 2u, 4u, 8u, 16u, 32u, 64u, 128u, 256u, 512u, 1024u });
+	Buffer<uint32_t> buffer2(context, 10);
 	Tensor<uint32_t> tensor(context, 10);
-
-	//write data
-	uint32_t i = 1;
-	for (auto& v : buffer1.getMemory()) {
-		v = i;
-		i <<= 1;
-	}
 
 	//copy data
 	auto copyTo = updateTensor(buffer1, tensor);
