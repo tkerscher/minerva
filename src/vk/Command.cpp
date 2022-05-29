@@ -8,7 +8,7 @@
 
 namespace minerva::vulkan {
 
-CommandHandle createCommand(const Context& context) {
+CommandHandle createCommand(const Context& context, bool startRecording) {
 	CommandHandle result{
 		new Command({nullptr, context}),
 		destroyCommand
@@ -17,6 +17,11 @@ CommandHandle createCommand(const Context& context) {
 	auto info = CommandBufferAllocateInfo(context.cmdPool);
 	checkResult(context.table.vkAllocateCommandBuffers(
 		context.device, &info, &result->buffer));
+
+	if (startRecording) {
+		auto begin = vulkan::CommandBufferBeginInfo();
+		checkResult(context.table.vkBeginCommandBuffer(result->buffer, &begin));
+	}
 
 	return result;
 }

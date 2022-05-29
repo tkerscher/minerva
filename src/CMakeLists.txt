@@ -7,6 +7,8 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Buffer.hpp
     ${INCROOT}/Copy.hpp
     ${INCROOT}/Device.hpp
+    ${INCROOT}/Image.hpp
+    ${INCROOT}/ImageFormat.hpp
     ${INCROOT}/Instance.hpp
     ${INCROOT}/Program.hpp
     ${INCROOT}/Sequence.hpp
@@ -22,6 +24,7 @@ set(SRC
     ${SRCROOT}/Buffer.cpp
     ${SRCROOT}/Copy.cpp
     ${SRCROOT}/Device.cpp
+    ${SRCROOT}/Image.cpp
     ${SRCROOT}/Instance.cpp
     ${SRCROOT}/Program.cpp
     ${SRCROOT}/Sequence.cpp
@@ -36,6 +39,8 @@ set(SRC
     ${SRCROOT}/vk/Context.cpp
     ${SRCROOT}/vk/Command.hpp
     ${SRCROOT}/vk/Command.cpp
+    ${SRCROOT}/vk/Image.hpp
+    ${SRCROOT}/vk/Image.cpp
     ${SRCROOT}/vk/Instance.hpp
     ${SRCROOT}/vk/Instance.cpp
     ${SRCROOT}/vk/Settings.hpp

@@ -9,6 +9,7 @@ namespace minerva {
 		struct Command;
 		struct Context;
 		struct Instance;
+		struct Image;
 		struct Timeline;
 	}
 
@@ -16,5 +17,6 @@ namespace minerva {
 	using CommandHandle = std::unique_ptr<vulkan::Command, void(*)(vulkan::Command*)>;
 	using ContextHandle = std::unique_ptr<vulkan::Context, void(*)(vulkan::Context*)>;
 	using InstanceHandle = std::unique_ptr<vulkan::Instance, void(*)(vulkan::Instance*)>;
+	using ImageHandle = std::unique_ptr<vulkan::Image, void(*)(vulkan::Image*)>;
 	using TimelineHandle = std::unique_ptr<vulkan::Timeline, void(*)(vulkan::Timeline*)>;
 }

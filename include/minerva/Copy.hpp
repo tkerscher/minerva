@@ -1,31 +1,20 @@
 #pragma once
 
 #include "minerva/Buffer.hpp"
+#include "minerva/Image.hpp"
 #include "minerva/Handles.hpp"
 #include "minerva/Tensor.hpp"
 
 namespace minerva {
-	class MINERVA_API CopyCommandFactory {
-	public:
-		[[nodiscard]]
-		static CommandHandle retrieveTensor(const TensorImp& src, const BufferImp& dst);
-		[[nodiscard]]
-		static CommandHandle updateTensor(const BufferImp& src, const TensorImp& dst);
 
-		CopyCommandFactory() = delete;
-	};
+	//retrieve
 
-	//syntactic sugar
-	template<class Src, class Dst>
-	[[nodiscard]] inline CommandHandle retrieveTensor(
-		const Tensor<Src>& src, const Buffer<Dst>& dst)
-	{
-		return CopyCommandFactory::retrieveTensor(src, dst);
-	}
-	template<class Src, class Dst>
-	[[nodiscard]] inline CommandHandle updateTensor(
-		const Buffer<Src>& src, const Tensor<Dst>& dst)
-	{
-		return CopyCommandFactory::updateTensor(src, dst);
-	}
+	[[nodiscard]] MINERVA_API CommandHandle retrieveImage(const Image& src, const BufferImp& dst);
+	[[nodiscard]] MINERVA_API CommandHandle retrieveTensor(const TensorImp& src, const BufferImp& dst);
+
+	//update
+
+	[[nodiscard]] MINERVA_API CommandHandle updateImage(const BufferImp& src, const Image& dst);
+	[[nodiscard]] MINERVA_API CommandHandle updateTensor(const BufferImp& src, const TensorImp& dst);
+
 }

@@ -56,6 +56,12 @@ namespace minerva::Settings {
         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 }
     });
 
+    //Image settings
+    constexpr VkImageUsageFlags ImageUsage =
+        VK_IMAGE_USAGE_STORAGE_BIT |
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+        VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+
     //Debug
     constexpr VkDebugReportFlagsEXT DebugFlags =
 #if defined(MINERVA_VERBOSE_VULKAN)

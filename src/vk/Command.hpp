@@ -14,6 +14,6 @@ namespace minerva::vulkan {
 	};
 
 	[[nodiscard]]
-	CommandHandle createCommand(const Context& handle);
+	CommandHandle createCommand(const Context& handle, bool startRecording = true);
 	void destroyCommand(Command* command);
 }

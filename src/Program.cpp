@@ -12,6 +12,7 @@
 #include "vk/Buffer.hpp"
 #include "vk/Command.hpp"
 #include "vk/Context.hpp"
+#include "vk/Image.hpp"
 #include "vk/Structs.hpp"
 #include "vk/result.hpp"
 
@@ -23,6 +24,7 @@ void spvCheckResult(SpvReflectResult result) {
 bool descriptorTypeSupported(SpvReflectDescriptorType type) {
 	switch (type) {
 	case SPV_REFLECT_DESCRIPTOR_TYPE_STORAGE_BUFFER:
+	case SPV_REFLECT_DESCRIPTOR_TYPE_STORAGE_IMAGE:
 		return true;
 	default:
 		return false;
@@ -81,6 +83,28 @@ void Parameter::setArgument(const TensorImp& tensor, uint32_t binding) {
 		binding,
 		VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
 		bufferInfo);
+
+	context.table.vkUpdateDescriptorSets(context.device,
+		1, &write,
+		0, nullptr);
+}
+
+void Parameter::setArgument(const Image& img, uint32_t binding) {
+	//Check same context
+	if (&img.getImage().context != &_pImpl->context)
+		throw std::logic_error("Tensor and Parameter must originate from the same context!");
+	auto& context = _pImpl->context;
+
+	VkDescriptorImageInfo imageInfo{
+		VK_NULL_HANDLE,
+		img.getImage().view,
+		VK_IMAGE_LAYOUT_GENERAL
+	};
+	auto write = vulkan::WriteDescriptorSet(
+		_pImpl->descriptorSet,
+		binding,
+		VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
+		imageInfo);
 
 	context.table.vkUpdateDescriptorSets(context.device,
 		1, &write,
@@ -153,9 +177,6 @@ CommandHandle Program::Run(uint32_t x, uint32_t y, uint32_t z, span<const Parame
 
 	//Create command buffer
 	auto cmd = vulkan::createCommand(_pImpl->context);
-	//begin recording
-	auto beginInfo = vulkan::CommandBufferBeginInfo();
-	vulkan::checkResult(_pImpl->context.table.vkBeginCommandBuffer(cmd->buffer, &beginInfo));
 	
 	//bind pipeline
 	_pImpl->context.table.vkCmdBindPipeline(

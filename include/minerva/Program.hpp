@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "minerva/Handles.hpp"
+#include "minerva/Image.hpp"
 #include "minerva/Tensor.hpp"
 #include "minerva/config.hpp"
 #include "minerva/span.hpp"
@@ -11,6 +12,7 @@ namespace minerva {
 	class MINERVA_API Parameter {	
 	public:
 		void setArgument(const TensorImp& tensor, uint32_t binding = 0);
+		void setArgument(const Image& img, uint32_t binding = 0);
 
 		~Parameter();
 	private:

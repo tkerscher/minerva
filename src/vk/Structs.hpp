@@ -40,10 +40,28 @@ constexpr VkBufferCreateInfo BufferCreateInfo(
 }
 
 [[nodiscard]]
+constexpr VkBufferImageCopy BufferImageCopy(
+	VkOffset3D offset,
+	VkExtent3D extent)
+{
+	VkBufferImageCopy copy = {};
+
+	copy.bufferRowLength = 0;   //tightly packed
+	copy.bufferImageHeight = 0; //tightly packed
+	copy.imageSubresource = {
+		VK_IMAGE_ASPECT_COLOR_BIT,
+		0, 0, 1 };
+	copy.imageOffset = offset;
+	copy.imageExtent = extent;
+
+	return copy;
+}
+
+[[nodiscard]]
 constexpr VkBufferMemoryBarrier BufferMemoryBarrier(
 	VkBuffer buffer,
-	VkAccessFlagBits src,
-	VkAccessFlagBits dst)
+	VkAccessFlags src,
+	VkAccessFlags dst)
 {
 	VkBufferMemoryBarrier barrier = {};
 
@@ -191,6 +209,75 @@ constexpr VkDeviceQueueCreateInfo DeviceQueueCreateInfo(
 }
 
 [[nodiscard]]
+constexpr VkImageCreateInfo ImageCreateInfo(
+	VkImageType type,
+	VkExtent3D extent,
+	VkFormat format)
+{
+	VkImageCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	info.imageType = type;
+	info.extent = extent;
+	info.format = format;
+	info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	info.mipLevels = 1;
+	info.arrayLayers = 1;
+	info.samples = VK_SAMPLE_COUNT_1_BIT;
+	info.tiling = VK_IMAGE_TILING_OPTIMAL;
+	info.usage = Settings::ImageUsage;
+	info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkImageMemoryBarrier ImageMemoryBarrier(
+	VkImage image,
+	VkImageLayout oldLayout, VkImageLayout newLayout,
+	VkAccessFlags srcAccess, VkAccessFlags dstAccess)
+{
+	VkImageMemoryBarrier barrier = {};
+
+	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	barrier.image = image;
+	barrier.oldLayout = oldLayout;
+	barrier.newLayout = newLayout;
+	barrier.srcAccessMask = srcAccess;
+	barrier.dstAccessMask = dstAccess;
+	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.subresourceRange = {
+		VK_IMAGE_ASPECT_COLOR_BIT,
+		0, 1,
+		0, 1
+	};
+
+	return barrier;
+}
+
+[[nodiscard]]
+constexpr VkImageViewCreateInfo ImageViewCreateInfo(
+	VkImage image,
+	VkImageViewType type,
+	VkFormat format)
+{
+	VkImageViewCreateInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	info.image = image;
+	info.viewType = type;
+	info.format = format;
+	info.subresourceRange = {
+		VK_IMAGE_ASPECT_COLOR_BIT, //TODO: I'm unsure if this should be NONE
+		0, 1, 0, 1
+	};
+	//info.components //leaving this zero means identity
+
+	return info;
+}
+
+[[nodiscard]]
 constexpr VkInstanceCreateInfo InstanceCreateInfo(
 	const VkApplicationInfo& appInfo)
 {
@@ -319,6 +406,19 @@ constexpr VkSubmitInfo SubmitInfo(
 }
 
 [[nodiscard]]
+constexpr VkSubmitInfo SubmitInfo(
+	const VkCommandBuffer& cmdBuf)
+{
+	VkSubmitInfo info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	info.commandBufferCount = 1;
+	info.pCommandBuffers = &cmdBuf;
+
+	return info;
+}
+
+[[nodiscard]]
 constexpr VkTimelineSemaphoreSubmitInfo TimelineSemaphoreSubmitInfo(
 	uint64_t* waitValue,
 	uint64_t* signalValue)
@@ -349,6 +449,25 @@ constexpr VkWriteDescriptorSet WriteDescriptorSet(
 	info.descriptorType = type;
 	info.descriptorCount = 1;
 	info.pBufferInfo = &bufferInfo;
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkWriteDescriptorSet WriteDescriptorSet(
+	VkDescriptorSet set,
+	uint32_t dstBinding,
+	VkDescriptorType type,
+	const VkDescriptorImageInfo& imageInfo)
+{
+	VkWriteDescriptorSet info = {};
+
+	info.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	info.dstSet = set;
+	info.dstBinding = dstBinding;
+	info.descriptorType = type;
+	info.descriptorCount = 1;
+	info.pImageInfo = &imageInfo;
 
 	return info;
 }
