@@ -34,6 +34,7 @@ namespace minerva {
 		[[nodiscard]] CommandHandle Run(uint32_t x, uint32_t y, uint32_t z, span<const Parameter> params);
 
 		Program(const ContextHandle& context, span<uint32_t> code);
+		Program(const ContextHandle& context, const char* filename);
 		~Program();
 
 	private:

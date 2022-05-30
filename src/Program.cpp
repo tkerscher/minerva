@@ -259,6 +259,10 @@ Program::Program(const ContextHandle& context, span<uint32_t> code) {
 		nullptr, &_pImpl->pipeline));
 }
 
+Program::Program(const ContextHandle& context, const char* filename)
+	: Program(context, loadShader(filename))
+{}
+
 Program::~Program() = default;
 
 /******************************************** Util ****************************************/
