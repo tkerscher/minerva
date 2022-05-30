@@ -10,6 +10,9 @@ namespace minerva {
 		[[nodiscard]] span<std::byte> getMemory() const;
 		[[nodiscard]] uint64_t size_bytes() const;
 
+		BufferImp(BufferImp&& other) noexcept;
+		BufferImp& operator=(BufferImp&& other) noexcept;
+
 		BufferImp(const ContextHandle& context, uint64_t size);
 		BufferImp(const ContextHandle& context, span<const std::byte> data);
 		virtual ~BufferImp();

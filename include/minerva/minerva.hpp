@@ -4,6 +4,7 @@
 #include "minerva/Copy.hpp"
 #include "minerva/Device.hpp"
 #include "minerva/Image.hpp"
+#include "minerva/ImageBuffer.hpp"
 #include "minerva/Instance.hpp"
 #include "minerva/Program.hpp"
 #include "minerva/Sequence.hpp"

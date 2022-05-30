@@ -26,8 +26,8 @@ int main() {
 	std::cout << "Selected Device: " << device.name << "\n\n";
 
 	//allocate memory
-	Buffer<uint8_t> buffer(context, 4 * width * height);
 	Image image(context, ImageFormat::R8G8B8A8_UNORM, width, height);
+	ImageBuffer buffer(context, width, height);
 
 	//create program
 	Program program(context, code);
@@ -51,17 +51,6 @@ int main() {
 
 	//write image in ppm format
 	std::cout << "Saving...\n";
-	std::ofstream file("mandelbrot.ppm", std::ios::out | std::ios::binary);
-	file << "P6\n" << width << '\n' << height << '\n' << 255 << '\n';
-	auto data = buffer.getMemory();
-	//write image, but skip alpha channel
-	auto bytes_written = 0;
-	for (auto b : buffer.getMemory()) {
-		if (bytes_written % 4 != 3) {
-			file << b;
-		}
-		bytes_written++;
-	}
-	file.close();
+	buffer.save("mandelbrot.png");
 	std::cout << "Done!\n";
 }
