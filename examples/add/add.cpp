@@ -7,13 +7,6 @@
 using namespace minerva;
 
 int main() {
-	//load shader
-	auto code = loadShader("add.spv");
-	if (code.empty()) {
-		std::cerr << "Could not load shader code!";
-		return -1;
-	}
-
 	//create context
 	auto instance = createInstance();
 	auto context = createContext(instance);
@@ -32,7 +25,7 @@ int main() {
 	Tensor<uint32_t> tensor3(context, 10);
 
 	//create program
-	Program program(context, code);
+	Program program(context, "add.spv");
 
 	//create params
 	auto param = program.createParameter();

@@ -10,13 +10,6 @@ constexpr uint32_t height = 4320;
 using namespace minerva;
 
 int main() {
-	//load shader
-	auto code = loadShader("mandelbrot.spv");
-	if (code.empty()) {
-		std::cerr << "Could not load shader code!";
-		return -1;
-	}
-
 	//create context
 	auto instance = createInstance();
 	auto context = createContext(instance);
@@ -30,7 +23,7 @@ int main() {
 	ImageBuffer buffer(context, width, height);
 
 	//create program
-	Program program(context, code);
+	Program program(context, "mandelbrot.spv");
 
 	//create param
 	auto param = program.createParameter();
