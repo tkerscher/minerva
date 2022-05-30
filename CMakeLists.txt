@@ -65,6 +65,18 @@ if(NOT reflect_POPULATED)
         ${reflect_SOURCE_DIR}/spirv_reflect.c)
     target_include_directories(spirv-reflect PUBLIC ${reflect_SOURCE_DIR})
 endif()
+#stb image - it has no CMakeLists.txt so we make the target ourselves
+FetchContent_Declare(
+    stb_s
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG af1a5bc352164740c1cc1354942b1c6b72eacb8a
+)
+FetchContent_GetProperties(stb_s)
+if (NOT stb_s_POPULATED)
+    FetchContent_Populate(stb_s)
+    add_library(stb INTERFACE)
+    target_include_directories(stb INTERFACE ${stb_s_SOURCE_DIR})
+endif()
 
 #source code
 add_subdirectory(src)

@@ -37,6 +37,9 @@ BufferImp::BufferImp(const ContextHandle& context, span<const std::byte> data)
 	//copy
 	std::copy(data.begin(), data.end(), memory.begin());
 }
+
+BufferImp& BufferImp::operator=(BufferImp&&) noexcept = default;
+BufferImp::BufferImp(BufferImp&&) noexcept = default;
 BufferImp::~BufferImp() = default;
 
 }

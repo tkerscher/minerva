@@ -8,6 +8,7 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Copy.hpp
     ${INCROOT}/Device.hpp
     ${INCROOT}/Image.hpp
+    ${INCROOT}/ImageBuffer.hpp
     ${INCROOT}/ImageFormat.hpp
     ${INCROOT}/Instance.hpp
     ${INCROOT}/Program.hpp
@@ -25,6 +26,7 @@ set(SRC
     ${SRCROOT}/Copy.cpp
     ${SRCROOT}/Device.cpp
     ${SRCROOT}/Image.cpp
+    ${SRCROOT}/ImageBuffer.cpp
     ${SRCROOT}/Instance.cpp
     ${SRCROOT}/Program.cpp
     ${SRCROOT}/Sequence.cpp
@@ -74,6 +76,7 @@ target_link_libraries(minerva PRIVATE Vulkan::Headers)
 target_link_libraries(minerva PRIVATE volk)
 target_link_libraries(minerva PRIVATE VulkanMemoryAllocator)
 target_link_libraries(minerva PRIVATE spirv-reflect)
+target_link_libraries(minerva PRIVATE stb)
 
 #Postfix for static and/or debugs
 if(BUILD_SHARED_LIBS)
