@@ -124,6 +124,7 @@ struct Program::pImpl {
 	VkPipeline pipeline;
 	VkPipelineLayout pipeLayout;
 	VkShaderModule shader;
+	CommandHandle cmd;
 
 	const vulkan::Context& context;
 
@@ -133,6 +134,7 @@ struct Program::pImpl {
 		, pipeline(nullptr)
 		, pipeLayout(nullptr)
 		, shader(nullptr)
+		, cmd({ nullptr, nullptr })
 	{}
 	~pImpl() {
 		//destroy in reverse order
@@ -162,26 +164,15 @@ uint32_t Program::getParameterCount() const {
 	return _pImpl->setLayouts.size();
 }
 
-CommandHandle Program::Run(uint32_t x, uint32_t y, uint32_t z) {
-	return Run(x, y, z, {});
-}
-
-CommandHandle Program::Run(uint32_t x, uint32_t y, uint32_t z, const Parameter& param) {
-	return Run(x, y, z, { &param, 1 });
-}
-
-CommandHandle Program::Run(uint32_t x, uint32_t y, uint32_t z, span<const Parameter> params) {
-	//sanity check
-	if (params.size() != getParameterCount())
-		throw std::logic_error("Not all parameters provided!");
-
-	//Create command buffer
-	auto cmd = vulkan::createCommand(_pImpl->context);
-	
+void Program::beginCommand() {
+	//create command
+	_pImpl->cmd = vulkan::createCommand(_pImpl->context);
 	//bind pipeline
 	_pImpl->context.table.vkCmdBindPipeline(
-		cmd->buffer, VK_PIPELINE_BIND_POINT_COMPUTE, _pImpl->pipeline);
+		_pImpl->cmd->buffer, VK_PIPELINE_BIND_POINT_COMPUTE, _pImpl->pipeline);
+}
 
+void Program::bindParams(span<const Parameter> params) {
 	//collect sets
 	std::vector<VkDescriptorSet> sets(params.size());
 	auto i = 0u;
@@ -193,18 +184,31 @@ CommandHandle Program::Run(uint32_t x, uint32_t y, uint32_t z, span<const Parame
 		sets[i++] = p._pImpl->descriptorSet;
 	}
 	//bind sets
-	_pImpl->context.table.vkCmdBindDescriptorSets(cmd->buffer,
+	_pImpl->context.table.vkCmdBindDescriptorSets(_pImpl->cmd->buffer,
 		VK_PIPELINE_BIND_POINT_COMPUTE,
 		_pImpl->pipeLayout,
 		0, sets.size(), sets.data(),
 		0, nullptr);
-	
-	//dispatch
-	_pImpl->context.table.vkCmdDispatch(cmd->buffer, x, y, z);
+}
 
-	//end recording and return
-	vulkan::checkResult(_pImpl->context.table.vkEndCommandBuffer(cmd->buffer));
-	return cmd;
+void Program::dispatch(const Dispatch<void>& dispatch) {
+	//push constant if there is any
+	if (!dispatch.push.empty()) {
+		_pImpl->context.table.vkCmdPushConstants(_pImpl->cmd->buffer,
+			_pImpl->pipeLayout,
+			VK_SHADER_STAGE_COMPUTE_BIT,
+			0, dispatch.push.size_bytes(), dispatch.push.data());
+	}
+
+	//dispatch
+	_pImpl->context.table.vkCmdDispatch(_pImpl->cmd->buffer,
+		dispatch.groupCountX, dispatch.groupCountY, dispatch.groupCountZ);
+}
+
+CommandHandle Program::endCommand() {
+	//end recording & return
+	vulkan::checkResult(_pImpl->context.table.vkEndCommandBuffer(_pImpl->cmd->buffer));
+	return std::move(_pImpl->cmd);
 }
 
 Program::Program(const ContextHandle& context, span<uint32_t> code) {
@@ -240,8 +244,22 @@ Program::Program(const ContextHandle& context, span<uint32_t> code) {
 			context->device, &createInfo, nullptr, _pImpl->setLayouts.data() + iSet));
 	}
 
-	//create pipeline layout
 	auto layoutInfo = vulkan::PipelineLayoutCreateInfo(_pImpl->setLayouts);
+
+	//read push descriptor
+	VkPushConstantRange push = {};
+	if (reflectModule->push_constant_block_count > 1) {
+		throw std::logic_error("Multiple push constant found, but only up to one is supported!");
+	}
+	else if (reflectModule->push_constant_block_count == 1) {
+		push.stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
+		push.size = reflectModule->push_constant_blocks->size; //padded_size?
+
+		layoutInfo.pushConstantRangeCount = 1;
+		layoutInfo.pPushConstantRanges = &push;
+	}
+
+	//create pipeline layout
 	vulkan::checkResult(context->table.vkCreatePipelineLayout(
 		context->device, &layoutInfo, nullptr, &_pImpl->pipeLayout));
 
