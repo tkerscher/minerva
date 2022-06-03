@@ -4,6 +4,11 @@ layout(local_size_x = 4, local_size_y = 4) in;
 
 layout(binding = 0, rgba8) uniform image2D outImage;
 
+layout(push_constant) uniform constants {
+    vec2 trans;
+    float scale;
+} push;
+
 //adapted from "Smooth Iterations" by MisterSirCode
 //See: https://www.shadertoy.com/view/sdtcz2
 
@@ -17,6 +22,10 @@ void main() {
     vec2 uv = ((2.0 * coord - size) / size.y) * 1.5;
     vec2 z = vec2(0.0);
     float l = 0.0;
+
+    //transform
+    uv = uv * push.scale;
+    uv += push.trans;
 
     //main loop
     for (l = 0.0; l < 100.0; l += 1.0) {

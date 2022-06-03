@@ -38,7 +38,7 @@ int main() {
 	auto copy1 = updateTensor(buffer1, tensor1);
 	auto copy2 = updateTensor(buffer2, tensor2);
 	auto copy3 = retrieveTensor(tensor3, buffer3);
-	auto run = program.Run(10, 1, 1, param);
+	auto run = program.Run({ 10 }, param);
 
 	//create sequence
 	Timeline timeline(context);

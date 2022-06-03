@@ -7,9 +7,23 @@
 constexpr uint32_t width = 7680;
 constexpr uint32_t height = 4320;
 
+struct Push {
+	float transX;
+	float transY;
+	float scale;
+};
+
 using namespace minerva;
 
-int main() {
+int main(int argc, char* argv[]) {
+	//Either use default params or parse args
+	Push push{ 0.f, 0.f, 1.f };
+	if (argc == 4) {
+		push.transX = std::atof(argv[1]);
+		push.transY = std::atof(argv[2]);
+		push.scale = std::atof(argv[3]);
+	}
+
 	//create context
 	auto instance = createInstance();
 	auto context = createContext(instance);
@@ -30,7 +44,7 @@ int main() {
 	param.setArgument(image);
 
 	//create commands
-	auto run = program.Run(width / 4, height / 4, 1, param);
+	auto run = program.Run<Push>({ width / 4, height / 4, push }, param);
 	auto ret = retrieveImage(image, buffer);
 
 	//create sequence
