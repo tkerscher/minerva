@@ -152,7 +152,7 @@ CommandHandle updateImage(const BufferImp& src, const Image& dst) {
 		VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT,
 		VK_ACCESS_TRANSFER_WRITE_BIT);
 	context.table.vkCmdPipelineBarrier(command->buffer,
-		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+		VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
 		VK_PIPELINE_STAGE_TRANSFER_BIT,
 		VK_DEPENDENCY_BY_REGION_BIT,
 		0, nullptr,
