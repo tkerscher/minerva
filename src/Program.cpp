@@ -211,7 +211,7 @@ CommandHandle Program::endCommand() {
 	return std::move(_pImpl->cmd);
 }
 
-Program::Program(const ContextHandle& context, span<uint32_t> code) {
+Program::Program(const ContextHandle& context, span<const uint32_t> code, span<const std::byte> consts) {
 	//RAII wrapper for SpvReflectModule
 	using ReflectHandle = std::unique_ptr<SpvReflectShaderModule, decltype(&spvReflectDestroyShaderModule)>;
 	auto reflectModule = ReflectHandle(new SpvReflectShaderModule, spvReflectDestroyShaderModule);
@@ -268,17 +268,40 @@ Program::Program(const ContextHandle& context, span<uint32_t> code) {
 	vulkan::checkResult(context->table.vkCreateShaderModule(
 		context->device, &shaderInfo, nullptr, &_pImpl->shader));
 
+	//create specialization constants
+	//spirv reflect does not support spec constant and even if we'd still have to guess the mapping
+	//instead we assume all spec consts to be 4 bytes starting with id 1 in consecutive order
+	//without jumping any ids
+
+	auto constCount = consts.size_bytes() / 4;
+	std::vector<VkSpecializationMapEntry> specMap(constCount);
+	for (auto i = 0u; i < constCount; ++i) {
+		specMap[i] = { i, 4 * i, 4 };
+	}
+	auto specInfo = vulkan::SpecializationInfo(specMap, consts);
+
 	//Create compute pipeline
 	auto pipeInfo = vulkan::ComputePipelineCreateInfo(
-		_pImpl->pipeLayout, reflectModule->entry_point_name, _pImpl->shader);
+		_pImpl->pipeLayout,
+		reflectModule->entry_point_name,
+		_pImpl->shader,
+		consts.empty() ? nullptr : &specInfo);
 	vulkan::checkResult(context->table.vkCreateComputePipelines(
 		context->device, context->pipeCache,
 		1, &pipeInfo,
 		nullptr, &_pImpl->pipeline));
 }
 
+Program::Program(const ContextHandle& context, const char* filename, span<const std::byte> consts)
+	: Program(context, loadShader(filename), consts)
+{}
+
+Program::Program(const ContextHandle& context, span<const uint32_t> code)
+	: Program(context, code, {})
+{}
+
 Program::Program(const ContextHandle& context, const char* filename)
-	: Program(context, loadShader(filename))
+	: Program(context, loadShader(filename), {})
 {}
 
 Program::~Program() = default;

@@ -116,7 +116,8 @@ constexpr VkCommandPoolCreateInfo CommandPoolCreateInfo(
 constexpr VkComputePipelineCreateInfo ComputePipelineCreateInfo(
 	VkPipelineLayout layout,
 	const char* entryPoint,
-	VkShaderModule shaderModule)
+	VkShaderModule shaderModule,
+	const VkSpecializationInfo* specInfo)
 {
 	VkComputePipelineCreateInfo info = {};
 
@@ -128,7 +129,7 @@ constexpr VkComputePipelineCreateInfo ComputePipelineCreateInfo(
 	info.stage.module = shaderModule;
 	info.stage.pName = entryPoint;
 	info.stage.stage = VK_SHADER_STAGE_COMPUTE_BIT;
-	info.stage.pSpecializationInfo = nullptr; //not yet supported
+	info.stage.pSpecializationInfo = specInfo;
 
 	return info;
 }
@@ -372,13 +373,28 @@ constexpr VkSemaphoreWaitInfo SemaphoreWaitInfo(
 
 [[nodiscard]]
 constexpr VkShaderModuleCreateInfo ShaderModuleCreateInfo(
-	span<uint32_t> code)
+	span<const uint32_t> code)
 {
 	VkShaderModuleCreateInfo info = {};
 
 	info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	info.codeSize = code.size_bytes();
 	info.pCode = code.data();
+
+	return info;
+}
+
+[[nodiscard]]
+constexpr VkSpecializationInfo SpecializationInfo(
+	span<VkSpecializationMapEntry> entries,
+	span<const std::byte> data)
+{
+	VkSpecializationInfo info = {};
+
+	info.mapEntryCount = entries.size();
+	info.pMapEntries = entries.data();
+	info.dataSize = data.size();
+	info.pData = data.data();
 
 	return info;
 }

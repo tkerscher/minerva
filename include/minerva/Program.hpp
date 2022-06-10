@@ -126,8 +126,21 @@ namespace minerva {
 			return endCommand();
 		}
 
-		Program(const ContextHandle& context, span<uint32_t> code);
+		Program(const ContextHandle& context, span<const uint32_t> code);
 		Program(const ContextHandle& context, const char* filename);
+
+		Program(const ContextHandle& context, span<const uint32_t> code, span<const std::byte> consts);
+		Program(const ContextHandle& context, const char* filename, span<const std::byte> consts);
+		
+		template<class T>
+		Program(const ContextHandle& context, span<const uint32_t> code, const T& consts)
+			: Program(context, code, { reinterpret_cast<const std::byte*>(&consts), sizeof(T) })
+		{}
+		template<class T>
+		Program(const ContextHandle & context, const char* filename, const T & consts)
+			: Program(context, filename, { reinterpret_cast<const std::byte*>(&consts), sizeof(T) })
+		{}
+
 		~Program();
 
 	private:
