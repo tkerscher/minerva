@@ -1,7 +1,7 @@
 #pragma once
 
 #include "minerva/Buffer.hpp"
-#include "minerva/ImageFormat.hpp"
+#include "minerva/Image.hpp"
 
 namespace minerva {
 	class MINERVA_API ImageBuffer
@@ -17,6 +17,8 @@ namespace minerva {
 
 		[[nodiscard]] static ImageBuffer load(const ContextHandle& context, const char* filename);
 		[[nodiscard]] static ImageBuffer load(const ContextHandle& context, span<const std::byte> memory);
+
+		[[nodiscard]] Image createImage(const ContextHandle& context) const;
 
 		//always saves as png
 		void save(const char* filename) const;

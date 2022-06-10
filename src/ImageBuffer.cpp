@@ -17,6 +17,12 @@ uint32_t ImageBuffer::getHeight() const {
 	return height;
 }
 
+//TODO: It's a bit ugly that the context needs to be passed again,
+//but creating a non owning ContextHandle feels wrong
+Image ImageBuffer::createImage(const ContextHandle& context) const {
+	return Image(context, Format, getWidth(), getHeight());
+}
+
 ImageBuffer ImageBuffer::load(const ContextHandle& context, const char* filename) {
 	//load image
 	//unfortunately, stbi wants to allocate its own memory, so we have an extra copy...
