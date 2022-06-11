@@ -43,7 +43,7 @@ ImageBuffer ImageBuffer::load(const ContextHandle& context, span<const std::byte
 	int x, y, n;
 	auto data = stbi_load_from_memory(
 		reinterpret_cast<const unsigned char*>(memory.data()),
-		memory.size_bytes(),
+		static_cast<int>(memory.size_bytes()),
 		&x, &y, &n, STBI_rgb_alpha);
 	ImageBuffer result(context, x, y);
 	auto mem = result.getMemory();

@@ -161,7 +161,7 @@ Parameter Program::createParameter(uint32_t set) const {
 }
 
 uint32_t Program::getParameterCount() const {
-	return _pImpl->setLayouts.size();
+	return static_cast<uint32_t>(_pImpl->setLayouts.size());
 }
 
 void Program::beginCommand() {
@@ -187,7 +187,7 @@ void Program::bindParams(span<const Parameter> params) {
 	_pImpl->context.table.vkCmdBindDescriptorSets(_pImpl->cmd->buffer,
 		VK_PIPELINE_BIND_POINT_COMPUTE,
 		_pImpl->pipeLayout,
-		0, sets.size(), sets.data(),
+		0, static_cast<uint32_t>(sets.size()), sets.data(),
 		0, nullptr);
 }
 
@@ -197,7 +197,7 @@ void Program::dispatch(const Dispatch<void>& dispatch) {
 		_pImpl->context.table.vkCmdPushConstants(_pImpl->cmd->buffer,
 			_pImpl->pipeLayout,
 			VK_SHADER_STAGE_COMPUTE_BIT,
-			0, dispatch.push.size_bytes(), dispatch.push.data());
+			0, static_cast<uint32_t>(dispatch.push.size_bytes()), dispatch.push.data());
 	}
 
 	//dispatch

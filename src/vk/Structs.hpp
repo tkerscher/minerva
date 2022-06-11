@@ -142,7 +142,7 @@ constexpr VkDescriptorPoolCreateInfo DescriptorPoolInfo()
 	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	info.flags = Settings::DescriptorPoolCreateFlags;
 	info.maxSets = Settings::MaxDescriptorPoolSets;
-	info.poolSizeCount = Settings::DescriptorPoolSizes.size();
+	info.poolSizeCount = static_cast<uint32_t>(Settings::DescriptorPoolSizes.size());
 	info.pPoolSizes = Settings::DescriptorPoolSizes.data();
 
 	return info;
@@ -171,7 +171,7 @@ constexpr VkDescriptorSetLayoutCreateInfo DescriptorSetLayoutCreateInfo(
 
 	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 	info.flags = Settings::DescriptorSetLayoutCreateFlags;
-	info.bindingCount = bindings.size();
+	info.bindingCount = static_cast<uint32_t>(bindings.size());
 	info.pBindings = bindings.data();
 
 	return info;
@@ -286,9 +286,9 @@ constexpr VkInstanceCreateInfo InstanceCreateInfo(
 
 	info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	info.ppEnabledExtensionNames = Settings::InstanceExtensions.data();
-	info.enabledExtensionCount = Settings::InstanceExtensions.size();
+	info.enabledExtensionCount = static_cast<uint32_t>(Settings::InstanceExtensions.size());
 	info.ppEnabledLayerNames = Settings::Layers.data();
-	info.enabledLayerCount = Settings::Layers.size();
+	info.enabledLayerCount = static_cast<uint32_t>(Settings::Layers.size());
 	info.pApplicationInfo = &appInfo;
 
 	return info;
@@ -311,7 +311,7 @@ constexpr VkPipelineLayoutCreateInfo PipelineLayoutCreateInfo(
 	VkPipelineLayoutCreateInfo info = {};
 
 	info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	info.setLayoutCount = sets.size();
+	info.setLayoutCount = static_cast<uint32_t>(sets.size());
 	info.pSetLayouts = sets.data();
 	
 	return info;
@@ -391,9 +391,9 @@ constexpr VkSpecializationInfo SpecializationInfo(
 {
 	VkSpecializationInfo info = {};
 
-	info.mapEntryCount = entries.size();
+	info.mapEntryCount = static_cast<uint32_t>(entries.size());
 	info.pMapEntries = entries.data();
-	info.dataSize = data.size();
+	info.dataSize = static_cast<uint32_t>(data.size());
 	info.pData = data.data();
 
 	return info;
@@ -415,7 +415,7 @@ constexpr VkSubmitInfo SubmitInfo(
 	info.pWaitDstStageMask = waitDstStageMask;
 	info.signalSemaphoreCount = 1;
 	info.pSignalSemaphores = &semaphore;
-	info.commandBufferCount = cmdBuffers.size();
+	info.commandBufferCount = static_cast<uint32_t>(cmdBuffers.size());
 	info.pCommandBuffers = cmdBuffers.data();
 
 	return info;
