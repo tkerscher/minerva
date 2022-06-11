@@ -1,0 +1,17 @@
+#version 460
+
+layout(local_size_x_id = 0) in;
+
+layout(std430, binding = 0) buffer tensor { vec2 x[]; };
+layout(std140, binding = 1) uniform UBO {
+    float m11, m12, m21, m22;
+    float b1, b2;
+} ubo;
+
+void main() {
+    mat2 m = mat2(ubo.m11, ubo.m12, ubo.m21, ubo.m22);
+    vec2 b = vec2(ubo.b1, ubo.b2);
+
+    uint i = gl_GlobalInvocationID.x;
+    x[i] = m * x[i] + b;
+}
