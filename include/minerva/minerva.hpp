@@ -10,5 +10,6 @@
 #include "minerva/Sequence.hpp"
 #include "minerva/Tensor.hpp"
 #include "minerva/Timeline.hpp"
+#include "minerva/Uniform.hpp"
 
 #include "minerva/version.hpp"

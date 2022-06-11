@@ -58,7 +58,12 @@ SequenceBuilder& SequenceBuilder::WaitFor(uint64_t value) {
 	if (value < _pImp->currentValue)
 		throw std::logic_error("Wait value too low! Timeline can only go forward!");
 	
-	_pImp->currentValue = value;
+	//add new level
+	_pImp->commands.emplace_back();
+	_pImp->waitValues.push_back(value);
+	_pImp->currentValue = value + 1;
+	_pImp->signalValues.push_back(value + 1);
+
 	return *this;
 }
 

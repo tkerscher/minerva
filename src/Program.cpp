@@ -25,6 +25,7 @@ bool descriptorTypeSupported(SpvReflectDescriptorType type) {
 	switch (type) {
 	case SPV_REFLECT_DESCRIPTOR_TYPE_STORAGE_BUFFER:
 	case SPV_REFLECT_DESCRIPTOR_TYPE_STORAGE_IMAGE:
+	case SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER:
 		return true;
 	default:
 		return false;
@@ -82,6 +83,28 @@ void Parameter::setArgument(const TensorImp& tensor, uint32_t binding) {
 		_pImpl->descriptorSet,
 		binding,
 		VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+		bufferInfo);
+
+	context.table.vkUpdateDescriptorSets(context.device,
+		1, &write,
+		0, nullptr);
+}
+
+void Parameter::setArgument(const UniformImp& uniform, uint32_t binding) {
+	//Check same context
+	if (&uniform.getBuffer().context != &_pImpl->context)
+		throw std::logic_error("Tensor and Parameter must originate from the same context!");
+	auto& context = _pImpl->context;
+
+	VkDescriptorBufferInfo bufferInfo{
+		uniform.getBuffer().buffer,
+		0,
+		uniform.getBuffer().allocInfo.size
+	};
+	auto write = vulkan::WriteDescriptorSet(
+		_pImpl->descriptorSet,
+		binding,
+		VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
 		bufferInfo);
 
 	context.table.vkUpdateDescriptorSets(context.device,

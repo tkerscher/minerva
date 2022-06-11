@@ -15,6 +15,7 @@ set(PUBLIC_HEADERS
     ${INCROOT}/Sequence.hpp
     ${INCROOT}/Tensor.hpp
     ${INCROOT}/Timeline.hpp
+    ${INCROOT}/Uniform.hpp
     ${INCROOT}/config.hpp
     ${INCROOT}/minerva.hpp
     ${INCROOT}/version.hpp
@@ -32,6 +33,7 @@ set(SRC
     ${SRCROOT}/Sequence.cpp
     ${SRCROOT}/Tensor.cpp
     ${SRCROOT}/Timeline.cpp
+    ${SRCROOT}/Uniform.cpp
     ${SRCROOT}/array.hpp
     ${SRCROOT}/version.cpp
 #vulkan

@@ -10,13 +10,14 @@ BufferHandle createBuffer(
 	const ContextHandle& context,
 	uint64_t size,
 	VkBufferUsageFlags usage,
-	VmaAllocationCreateFlags flags)
+	VmaAllocationCreateFlags flags,
+	VmaMemoryUsage memory)
 {
 	BufferHandle result{new Buffer({0,0,{},*context}), destroyBuffer };
 
 	auto bufferInfo = BufferCreateInfo(size, usage);
 	VmaAllocationCreateInfo allocInfo{};
-	allocInfo.usage = VMA_MEMORY_USAGE_AUTO;
+	allocInfo.usage = memory;
 	allocInfo.flags = flags;
 
 	checkResult(vmaCreateBuffer(

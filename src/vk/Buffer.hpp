@@ -21,6 +21,7 @@ namespace minerva::vulkan {
 		const ContextHandle& context,
 		uint64_t size,
 		VkBufferUsageFlags usage,
-		VmaAllocationCreateFlags flags);
+		VmaAllocationCreateFlags flags,
+		VmaMemoryUsage memory = VMA_MEMORY_USAGE_AUTO);
 	void destroyBuffer(Buffer* buffer);
 }
