@@ -13,3 +13,18 @@
 #include "minerva/Uniform.hpp"
 
 #include "minerva/version.hpp"
+
+/**
+ * @defgroup command
+ * @brief Classes and functions for managing commands.
+ */
+
+/**
+ * @defgroup core
+ * @brief Core functionality for creating a context.
+ */
+
+/**
+ * @defgroup memory
+ * @brief Classes and functions for managing data objects used by shaders. 
+ */

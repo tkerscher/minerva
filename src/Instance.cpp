@@ -15,14 +15,6 @@ InstanceHandle createInstance(const char* name, AppVersion version) {
 }
 
 ContextHandle createContext(const InstanceHandle& instance) {
-	return createContext(instance, "Minerva App", { 1,0,0 });
-}
-
-ContextHandle createContext(
-	const InstanceHandle& instance,
-	const char* name,
-	AppVersion version)
-{
 	auto devices = enumerateDevices(instance);
 
 	//any devices found?
@@ -46,16 +38,6 @@ ContextHandle createContext(
 
 ContextHandle createContext(
 	const InstanceHandle& instance,
-	uint32_t vendorId,
-	uint32_t deviceId)
-{
-	return createContext(instance, "Minerva App", { 1,0,0 }, vendorId, deviceId);
-}
-
-ContextHandle createContext(
-	const InstanceHandle& instance,
-	const char* name,
-	AppVersion version,
 	uint32_t vendorId,
 	uint32_t deviceId)
 {

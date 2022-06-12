@@ -89,3 +89,9 @@ option(BUILD_EXAMPLES "Build examples" ON)
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+#docs
+option(BUILD_DOCS "Build documentation" OFF)
+if(BUILD_DOCS)
+    add_subdirectory(docs)
+endif()
