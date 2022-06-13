@@ -11,6 +11,8 @@ or Qualcom.
 This project was created as part for an assignment for university and should be
 treated as a proof of concept.
 
+Documentation available [online](https://tkerscher.github.io/minerva/).
+
 ## Building
 
 The only real dependencies are:
