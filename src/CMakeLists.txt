@@ -74,7 +74,7 @@ if (NOT BUILD_SHARED_LIBS)
 endif()
 
 #link libraries
-target_link_libraries(minerva PRIVATE Vulkan::Headers)
+target_link_libraries(minerva PRIVATE vulkan)
 target_link_libraries(minerva PRIVATE volk)
 target_link_libraries(minerva PRIVATE VulkanMemoryAllocator)
 target_link_libraries(minerva PRIVATE spirv-reflect)

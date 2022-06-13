@@ -28,7 +28,12 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
     GIT_TAG v1.3.212
 )
-FetchContent_MakeAvailable(VulkanHeaders)
+FetchContent_GetProperties(VulkanHeaders)
+if(NOT VulkanHeaders_POPULATED)
+    FetchContent_Populate(VulkanHeaders)
+    add_library(vulkan INTERFACE)
+    target_include_directories(vulkan INTERFACE ${VulkanHeaders_SOURCE_DIR}/include)
+endif()
 #Fetch volk loader
 FetchContent_Declare(
     volk
