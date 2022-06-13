@@ -1,0 +1,5 @@
+<map id="minerva::ImageBuffer" name="minerva::ImageBuffer">
+<area shape="rect" id="node1" title="Buffer specialized for interaction with Image." alt="" coords="9,169,151,196"/>
+<area shape="rect" id="node2" href="$classminerva_1_1_buffer.html" title=" " alt="" coords="5,80,155,121"/>
+<area shape="rect" id="node3" href="$classminerva_1_1_buffer_imp.html" title="Base class for Buffer holding the implementation." alt="" coords="16,5,144,32"/>
+</map>

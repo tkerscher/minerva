@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['retrieveimage_117',['retrieveImage',['../group__memory.html#ga3d795e8c62c324f81d776b117dc20071',1,'minerva']]],
+  ['retrievetensor_118',['retrieveTensor',['../group__memory.html#ga932684b2222b998a00209e0967ebb13f',1,'minerva']]],
+  ['run_119',['Run',['../classminerva_1_1_program.html#aea6fc1427f6d4e076d71cecb22e0daa1',1,'minerva::Program::Run(const Dispatch&lt; T &gt; &amp;batch)'],['../classminerva_1_1_program.html#abeb956ad0153f078f7adbf2fb8e13330',1,'minerva::Program::Run(const Dispatch&lt; T &gt; &amp;batch, const Parameter &amp;param)'],['../classminerva_1_1_program.html#a03b37bee1e97a02c9888583f9b14691c',1,'minerva::Program::Run(const Dispatch&lt; T &gt; &amp;batch, span&lt; const Parameter &gt; params)'],['../classminerva_1_1_program.html#a720340d8f7ce540349ca8ee09810c298',1,'minerva::Program::Run(span&lt; const Dispatch&lt; T &gt;&gt; batch)'],['../classminerva_1_1_program.html#a61b4d6fa16b8af2a416609aa7a9c81a5',1,'minerva::Program::Run(span&lt; const Dispatch&lt; T &gt;&gt; batch, const Parameter &amp;param)'],['../classminerva_1_1_program.html#ac0fc564cc9c8210990758ef52733d278',1,'minerva::Program::Run(span&lt; const Dispatch&lt; T &gt;&gt; batch, span&lt; const Parameter &gt; params)']]]
+];

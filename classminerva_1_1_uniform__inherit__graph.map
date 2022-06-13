@@ -1,0 +1,4 @@
+<map id="minerva::Uniform&lt; T &gt;" name="minerva::Uniform&lt; T &gt;">
+<area shape="rect" id="node1" title="Uniform managing memory readable by the GPU and writable by the CPU." alt="" coords="5,80,155,107"/>
+<area shape="rect" id="node2" href="$classminerva_1_1_uniform_imp.html" title="Base class for Uniform holding the implementation." alt="" coords="11,5,149,32"/>
+</map>

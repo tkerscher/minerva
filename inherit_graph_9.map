@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classminerva_1_1_tensor_imp.html" title="Base class for Tensor holding the implementation." alt="" coords="5,5,140,32"/>
+<area shape="rect" id="node2" href="$classminerva_1_1_tensor.html" title="Tensor managing memory on the GPU presented as an array of type T." alt="" coords="188,5,332,32"/>
+</map>

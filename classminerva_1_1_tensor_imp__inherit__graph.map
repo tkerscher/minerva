@@ -1,0 +1,4 @@
+<map id="minerva::TensorImp" name="minerva::TensorImp">
+<area shape="rect" id="node1" title="Base class for Tensor holding the implementation." alt="" coords="10,5,145,32"/>
+<area shape="rect" id="node2" href="$classminerva_1_1_tensor.html" title="Tensor managing memory on the GPU presented as an array of type T." alt="" coords="5,80,149,107"/>
+</map>
