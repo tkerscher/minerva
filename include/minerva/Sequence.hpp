@@ -61,7 +61,7 @@ namespace minerva {
 	 * @return SequenceBuilder The created builder.
 	 */
 	[[nodiscard]]
-	SequenceBuilder beginSequence(Timeline& timeline, uint64_t startValue = 0) {
+	inline SequenceBuilder beginSequence(Timeline& timeline, uint64_t startValue = 0) {
 		return SequenceBuilder(timeline, startValue);
 	}
 }

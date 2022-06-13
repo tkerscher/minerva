@@ -1,6 +1,6 @@
 #include "minerva/Uniform.hpp"
 
-#include <algorithm>
+#include <cstring>
 
 #include "vk/Buffer.hpp"
 

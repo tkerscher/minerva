@@ -333,6 +333,8 @@ Program::~Program() = default;
 
 std::vector<uint32_t> loadShader(const char* filename) {
 	std::ifstream file(filename, std::ios::binary | std::ios::ate);
+	if (!file)
+		throw std::runtime_error("File does not exist or cant be read!");
 	auto size = static_cast<size_t>(file.tellg());
 	file.seekg(0, std::ios::beg);
 	std::vector<uint32_t> code(size / 4);
