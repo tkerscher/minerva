@@ -24,15 +24,15 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 #Fetch the vulkan headers
 FetchContent_Declare(
-    VulkanHeaders
+    vulkan_headers
     GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
     GIT_TAG v1.3.212
 )
-FetchContent_GetProperties(VulkanHeaders)
-if(NOT VulkanHeaders_POPULATED)
-    FetchContent_Populate(VulkanHeaders)
+FetchContent_GetProperties(vulkan_headers)
+if(NOT vulkan_headers_POPULATED)
+    FetchContent_Populate(vulkan_headers)
     add_library(vulkan INTERFACE)
-    target_include_directories(vulkan INTERFACE ${VulkanHeaders_SOURCE_DIR}/include)
+    target_include_directories(vulkan INTERFACE ${vulkan_headers_SOURCE_DIR}/include)
 endif()
 #Fetch volk loader
 FetchContent_Declare(
@@ -41,6 +41,7 @@ FetchContent_Declare(
     GIT_TAG 1.3.204
 )
 FetchContent_MakeAvailable(volk)
+target_link_libraries(volk PRIVATE vulkan)
 #Fetch vulkan memory allocator
 FetchContent_Declare(
     vma
