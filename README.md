@@ -40,3 +40,10 @@ Additionally, if you want to build the documentation you need:
 - Doxygen
 - Dots
 - [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css)
+
+## Outlook
+
+Some ideas were not implemented, but might be later:
+
+- Python bindings using [pybind11](https://github.com/pybind/pybind11)
+- Code generator: Based on the shader code, extract structs and generate derivatives from the general purpose classes to match the shaders api
